@@ -3,21 +3,21 @@ import React from 'react';
 import {SceneMap, TabView} from 'react-native-tab-view';
 import {LaunchList} from '../components/listView/launchList';
 
-const FirstRoute = navigation => <LaunchList navigation={navigation} />;
+const LaunchesRoute = navigation => <LaunchList navigation={navigation} />;
 
-const SecondRoute = navigation => <LaunchList navigation={navigation} />;
+const FavoritesRoute = navigation => <LaunchList navigation={navigation} />;
 
-function Home({navigation}) {
+function Home({route, navigation}) {
   const layout = useWindowDimensions();
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    {key: 'first', title: 'First'},
-    {key: 'second', title: 'Second'},
+    {key: 'first', title: 'Launches'},
+    {key: 'second', title: 'Favorites'},
   ]);
 
   const renderScene = SceneMap({
-    first: () => FirstRoute(navigation),
-    second: () => SecondRoute(navigation),
+    first: () => LaunchesRoute(navigation),
+    second: () => FavoritesRoute(navigation),
   });
 
   return (

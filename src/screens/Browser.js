@@ -1,8 +1,8 @@
 import React from 'react';
 import WebView from 'react-native-webview';
 
-function Browser({routh, navigation}) {
-  const {name, wikiUrl} = navigation.params;
+function Browser({route, navigation}) {
+  const {name, wikiUrl} = route.params;
   console.log(wikiUrl, name);
 
   return <WebView source={{uri: wikiUrl}} />;

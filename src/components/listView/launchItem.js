@@ -19,12 +19,12 @@ function LaunchItem({
   navigation,
 }) {
   const openWiki = () => {
-    navigation.setParams({
+    navigation.navigate('Browser', {
       name: name,
-      url: wikiUrl,
+      wikiUrl: wikiUrl,
     });
-    navigation.navigate('Browser');
   };
+  const addToFavorites = () => {};
   return (
     <TouchableOpacity key={id} onPress={() => openWiki()}>
       <View on style={styles.container}>
@@ -33,7 +33,11 @@ function LaunchItem({
           <Text style={styles.detailsContainer}>{status}</Text>
         </View>
         <View style={styles.imageBox}>
-          <Button style={styles.favoriteButton} title={'favorite'} />
+          <Button
+            onPress={() => addToFavorites()}
+            style={styles.favoriteButton}
+            title={'favorite'}
+          />
           <Image style={styles.imageContent} source={{uri: image}} />
         </View>
       </View>

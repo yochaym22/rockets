@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   FlatList,
   SafeAreaView,
@@ -7,50 +7,22 @@ import {
   StatusBar,
 } from 'react-native';
 import {LaunchItem} from './launchItem';
-import {AppProvider} from '../../providers/LaunchesProvider';
-import {LaunchesContext} from '../../contexts/contexts';
+import {useSelector} from 'react-redux';
 
-function LaunchList() {
-  // const [launchState, setLaunchState] = useState({
-  //   error: null,
-  //   isLoaded: false,
-  //   items: [],
-  // });
-  //
-  // useEffect(() => {
-  //   fetch('https://lldev.thespacedevs.com/2.2.0/launch/?format=json')
-  //     .then(res => res.json())
-  //     .then(
-  //       result => {
-  //         setLaunchState({
-  //           isLoaded: true,
-  //           items: result.results,
-  //         });
-  //       },
-  //       error => {
-  //         setLaunchState({
-  //           ...launchState,
-  //           isLoaded: true,
-  //           error,
-  //         });
-  //       },
-  //     );
-  // }, [launchState, launchState.error]);
-  const {launches} = React.useContext(LaunchesContext);
-
-  const renderLaunchItem = ({item}) => {
-    return (
-      <LaunchItem
-        name={item.name}
-        id={item.id}
-        date={item.date}
-        image={item.image}
-        country={item.country}
-        status={item.status}
-        // navigation={navigation}
-      />
-    );
-  };
+function LaunchList({navigation}) {
+  const launchesItems = useSelector(state => state.launches.items);
+  const renderLaunchItem = ({item}) => (
+    <LaunchItem
+      name={item.name}
+      id={item.id}
+      date={item.date}
+      image={item.image}
+      country={item.country}
+      status={item.status}
+      wikiUrl={item.wikiUrl}
+      navigation={navigation}
+    />
+  );
   const mapToLaunch = items =>
     items.map(i => {
       return {
@@ -63,28 +35,22 @@ function LaunchList() {
         image: i.image || 'hardcoded default image url',
       };
     });
-
-  // if (launchState.error) {
-  //   return <Text>Error: {launchState.error.message}</Text>;
-  // } else if (!launchState.isLoaded) {
-  //   return <Text>Loading... :)</Text>;
-  // } else {
   return (
-    <AppProvider>
-      <SafeAreaView style={styles.container}>
-        <LaunchesContext.Consumer>
-          {/*<FlatList*/}
-          {/*  style={styles.list}*/}
-          {/*  data={mapToLaunch(context => context.LaunchState.items)}*/}
-          {/*  renderItem={renderLaunchItem}*/}
-          {/*  keyExtractor={item => item.id}*/}
-          {/*/>*/}
-        </LaunchesContext.Consumer>
-      </SafeAreaView>
-    </AppProvider>
+    <SafeAreaView style={styles.container}>
+      {launchesItems.length ? (
+        <FlatList
+          style={styles.list}
+          data={mapToLaunch(launchesItems)}
+          renderItem={renderLaunchItem}
+          keyExtractor={item => item.id}
+        />
+      ) : (
+        //TODO loading indicator
+        <Text>{launchesItems.length}</Text>
+      )}
+    </SafeAreaView>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -95,5 +61,4 @@ const styles = StyleSheet.create({
     backgroundColor: 'skyblue',
   },
 });
-
 module.exports = {LaunchList};
