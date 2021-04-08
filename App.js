@@ -6,9 +6,9 @@ import {rootReducer} from './src/store/store';
 import {GET_LAUNCHES} from './src/actions/actionTypes';
 import {callApi} from './src/store/middleware';
 import thunk from 'redux-thunk';
-
-const store = createStore(rootReducer, applyMiddleware(callApi, thunk));
-store.dispatch({type: GET_LAUNCHES});
+const apiUrl = 'https://lldev.thespacedevs.com/2.2.0/launch/?format=json';
+const store = createStore(rootReducer, applyMiddleware(callApi));
+store.dispatch({type: GET_LAUNCHES, apiUrl: apiUrl});
 
 const App = () => {
   return (

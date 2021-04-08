@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {ADD_LAUNCHE} from '../../actions/actionTypes';
 
 function LaunchItem({
   name,
@@ -18,13 +20,27 @@ function LaunchItem({
   wikiUrl,
   navigation,
 }) {
+  const favoritesItems = useSelector(state => state.favorites.items);
+  const dispatch = useDispatch;
+  const item = {
+    id: id,
+    name: name,
+    status: status,
+    date: date,
+    country: country,
+    wikiUrl: wikiUrl,
+    image: image,
+  };
+
   const openWiki = () => {
     navigation.navigate('Browser', {
       name: name,
       wikiUrl: wikiUrl,
     });
   };
-  const addToFavorites = () => {};
+  const addToFavorites = () => {
+    dispatch({type: ADD_LAUNCHE, payload: item});
+  };
   return (
     <TouchableOpacity key={id} onPress={() => openWiki()}>
       <View on style={styles.container}>
