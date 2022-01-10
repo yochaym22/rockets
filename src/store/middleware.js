@@ -24,7 +24,6 @@ export const callApi = ({dispatch}) => {
               payload: result,
               isLoading: false,
             });
-            console.log(result.isLoading);
             return result;
           },
           error => {
@@ -36,7 +35,7 @@ export const callApi = ({dispatch}) => {
             return Promise.reject();
           },
         );
-    } else if (action.type == GET_MORE_LAUNCHES) {
+    } else if (action.type === GET_MORE_LAUNCHES) {
       dispatch({
         type: SET_IS_LOADED,
         payload: true,

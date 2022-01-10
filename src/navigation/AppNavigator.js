@@ -1,9 +1,9 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-// import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from '@react-navigation/stack';
 import {Home} from '../screens/Home';
 import {Browser} from '../screens/Browser';
+import {Image} from 'react-native';
 
 const Stack = createStackNavigator();
 const HomeStack = () => {
@@ -18,12 +18,23 @@ const HomeStack = () => {
         <Stack.Screen
           name={'Browser'}
           component={Browser}
-          options={{title: 'Browser'}}
+          options={({route}) => ({
+            title: route.params.name,
+            headerRight: () => {
+              if (route.params.isFavorite) {
+                return (
+                  <Image
+                    source={require('../icons/filled_heart.png')}
+                    style={{width: 50, height: 50, marginRight: 5}}
+                  />
+                );
+              }
+            },
+          })}
         />
       </Stack.Navigator>
     </NavigationContainer>
   );
 };
 
-// const AppContainer = createAppContainer(HomeStack);
 export default HomeStack;

@@ -5,15 +5,7 @@ import AnimatedLoader from 'react-native-animated-loader';
 export default class Loader extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {visible: false};
-  }
-
-  componentDidMount() {
-    setInterval(() => {
-      this.setState({
-        visible: !this.state.visible,
-      });
-    }, 2000);
+    this.state = {visible: true};
   }
 
   render() {
@@ -22,7 +14,7 @@ export default class Loader extends React.Component {
       <AnimatedLoader
         visible={visible}
         overlayColor="rgba(255,255,255,0.75)"
-        source={require('./9764-loader.json')}
+        source={require('./loader.json')}
         animationStyle={styles.lottie}
         speed={1}>
         <Text>loading...</Text>

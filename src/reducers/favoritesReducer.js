@@ -2,6 +2,7 @@ import * as actions from '../actions/actionTypes';
 
 const initialState = {
   items: [],
+  isLoading: false,
 };
 export const favoriteReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -12,8 +13,7 @@ export const favoriteReducer = (state = initialState, action) => {
       };
     case actions.REMOVE_LAUNCH:
       return {
-        ...state,
-        items: state.items.filter(item => item !== action.payload),
+        items: state.items.filter(item => item.id !== action.payload.id),
       };
     default:
       return state;

@@ -8,7 +8,8 @@ import {
 } from 'react-native';
 import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {ADD_LAUNCHE} from '../../actions/actionTypes';
+import {ADD_LAUNCHE, REMOVE_LAUNCH} from '../../actions/actionTypes';
+import {findByIso3} from 'country-list-js';
 
 function LaunchItem({
   name,
@@ -19,9 +20,10 @@ function LaunchItem({
   status,
   wikiUrl,
   navigation,
+  isFavorite,
 }) {
-  const favoritesItems = useSelector(state => state.favorites.items);
-  const dispatch = useDispatch;
+  const favorites = useSelector(state => state.favorites.items);
+  const dispatch = useDispatch();
   const item = {
     id: id,
     name: name,
@@ -36,23 +38,39 @@ function LaunchItem({
     navigation.navigate('Browser', {
       name: name,
       wikiUrl: wikiUrl,
+      isFavorite: favorites.some(i => i.id === id),
     });
   };
-  const addToFavorites = () => {
-    dispatch({type: ADD_LAUNCHE, payload: item});
+  const handleButtonClick = () => {
+    isFavorite
+      ? dispatch({type: REMOVE_LAUNCH, payload: item})
+      : dispatch({type: ADD_LAUNCHE, payload: item});
   };
+  const shouldBeDisabled = () =>
+    !isFavorite && favorites.some(i => i.id === id);
+
   return (
     <TouchableOpacity key={id} onPress={() => openWiki()}>
       <View on style={styles.container}>
         <View style={styles.infoContainer}>
           <Text style={styles.nameContainer}>{name}</Text>
           <Text style={styles.detailsContainer}>{status}</Text>
+          <Text style={styles.detailsContainer}>
+            {new Date(date).toDateString()}
+          </Text>
+          <Text style={styles.detailsContainer}>
+            {findByIso3(country).name || country}
+          </Text>
         </View>
         <View style={styles.imageBox}>
           <Button
-            onPress={() => addToFavorites()}
+            onPress={() => handleButtonClick()}
+            disabled={shouldBeDisabled()}
             style={styles.favoriteButton}
-            title={'favorite'}
+            title={isFavorite ? 'Remove' : 'Favorite'}
+            titleStyle={{
+              fontSize: 2,
+            }}
           />
           <Image style={styles.imageContent} source={{uri: image}} />
         </View>
